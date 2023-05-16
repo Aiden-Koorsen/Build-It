@@ -1,0 +1,19 @@
+-- build-it --
+
+build-it is a easy to use tool for building projects of all sizes easily
+
+With a easy to use syntax and all it's features. build-it allows for compilation of files into object files which then are built into a executable. One of the best parts of this build system is that it only rebuilds the parts that you change. Which is a massive time saver.
+
+What really sets this build system apart from others is that it is easy to setup, run and compile. The tool is fast and cross-platform support is as easy as just adding a new compiler for a designated OS and then just running. 
+
+-- Features -- 
+
+	-> a fast tool
+	-> simple and easy to setup
+	-> allows for multiple type of build files
+	-> allows for cross platform compilation
+	-> rebuilds only the needed files
+	-> allows for different build conditions using variables and logic
+
+-- What am I working on now? --
+	-> a basic parser for loading files and manipulating strings

@@ -1,0 +1,36 @@
+// Creation of variables
+define name = test
+
+// The set command sets certain reversed variables for build-it itself
+set PROJECT_TYPE = C // build-it only supports C and C++ at the moment
+set PROJECT_NAME = {name} // use of {} indicates to use a variable
+set PROJECT_PLATFORM = LINUX
+
+// This below is just the files and all info
+
+// You can exclude certain files
+# EXCL_FILES
+src/donotcomp.c
+
+// You can even exclude entire folders
+# EXCL_DIR
+
+// You can compile certain files
+# FILES
+src/main.c
+
+// You can compile whole folders
+# FOLDERS
+src
+
+// You have include paths
+# INCL_DIR
+src
+
+// You have where your libraries are stored
+# LIB_DIR
+lib
+
+// You can now link certain libraries
+# LIBS
+-lm
