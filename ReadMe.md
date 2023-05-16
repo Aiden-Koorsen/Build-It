@@ -2,4 +2,4 @@
 
 A simple but powerful build system that only rebuilds when nessary
 
-Read the readme to learn more.
+Read the todo.txt to learn more.
