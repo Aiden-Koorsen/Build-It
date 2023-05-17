@@ -14,7 +14,7 @@ typedef struct
 	token* tokens;	
 } token_chunk;
 	
-int load_parser(FILE *fp, char *file_name);
+FILE* load_parser(char *file_name);
 int parse_file(FILE *fp);
 
 #endif

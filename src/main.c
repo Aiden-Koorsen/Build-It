@@ -5,33 +5,41 @@
 int main(int argc, char **argv)
 {
 	FILE *build_file = NULL;	
-	int result = 0;
 
-	// Default case when no file name is specified
-	if (argc == 1)
+	char *file_name;
+
+	if (argc > 2)
 	{
-		result = load_parser(build_file, "foundation.bif");
-	}
-	else if (argc == 2)
-	{
-		// Parse a name as well
-		result = load_parser(build_file, argv[1]);
-	}
-	else if (argc > 2)  
-	{
-			printf("Error: Too many arguments specified\nPlease either enter nno filename or a single filename for the build");
+		printf("Error: Too many arguments specified\nPlease either enter nno filename or a single filename for the build");
 		return 1;
-	}	
-	
-	if (result != 0)
+	}
+	else
 	{
+		switch (argc)
+		{
+			case 1:
+				build_file = load_parser("foundation.bif");
+				break;
+
+			case 2:
+				build_file = load_parser(argv[1]);
+				break;
+		}
+	}
 		
-		// We do not print anything here due to use already printing in the load_parser function
+	// Check to see if loading was successful
+	if (build_file == NULL)
+	{
 		return 1;
 	}
-	
-	// Parse file
-	
+
+	// If parsing has failed then quit
+	if (parse_file(build_file) == 1)
+	{
+		return 1;
+	}
+
+	fclose(build_file);
 	return 0;
 }
 

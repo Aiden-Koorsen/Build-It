@@ -1,23 +1,40 @@
 #include "parser.h"
 
-int load_parser(FILE *fp, char *file_name)
+FILE* load_parser(char *file_name)
 {
 	printf("Build-It: Version 0.01\n");
 	// Check to see if file exists and what ever else
-	fp = fopen(file_name, "r");
+	FILE *fp = fopen(file_name, "r");
 	
 	// If file doesn't exist
-	if (fp == NULL)
+	if (ferror(fp) || fp == NULL)
 	{
-		printf("Error: cannot find file: %s.", file_name);	
-		return 1;
-	}	
-	printf("Build-It: build file has been successfully loaded.\n");
-	return 0;	
+		printf("Error: File has failed to open%s.\n", file_name);	
+		return NULL;
+	}
+	else
+	{
+		printf("Build-It: build file has been successfully loaded.\n");
+		
+		return fp;
+	}
 }
 
 int parse_file(FILE *fp)
 {
+	printf("Build-It: Now parsing build script\n");
+
 	// Get line from file
-	char line[100];
+	char line[5];
+	
+	if (fgets(line, 5, fp) != NULL)
+	{
+		printf("%s\n", line);
+		return 0;
+	}
+	else
+	{
+		printf("Error: Failed to read from file.\n");
+		return 1;
+	}
 }
