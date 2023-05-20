@@ -5,21 +5,27 @@ token_chunk generate_tokens(char *line)
 	printf("  ->Generating tokens\n");
 
 	int token_count = 0, index = 0;
-	int *space_positions;
 
-	// Get amount of tokens
-	for (int i = 0; i < strlen(line); i++)
+	// Get amount of spaces
+	for (int i = 0; i < strlen(line) - 1; i++)
 	{
 		if (line[i] == ' ')
 		{
 			token_count++;
-			
-			// Extending the array in which we hold all the space positions
-			space_positions = realloc(space_positions, (index + 1));
+		}
+	}
+
+	int space_positions[token_count];
+
+	for (int i = 0; i < strlen(line) - 1; i++)
+	{
+		if (line[i] == ' ')
+		{
 			space_positions[index] = i;
 			index++;
 		}
 	}
+
 
 	token tokens[token_count + 1];
 
@@ -48,10 +54,11 @@ token_chunk generate_tokens(char *line)
 		offset = space_positions[i] + 1;
 	}
 
+	// Getting the last token from end of file
 	int size = (strlen(line) - space_positions[token_count - 1]) - 1;
 	tokens[token_count] = malloc(sizeof(char) * (size + 1));
 
-	strncpy(tokens[token_count], (line + offset), size);
+	strncpy(tokens[token_count], (line + strlen(line) - offset), size);
 	tokens[token_count][size] = '\0';
 
 	// Assign values to result and then return the new chunk
@@ -59,6 +66,14 @@ token_chunk generate_tokens(char *line)
 	
 	result.size = token_count + 1;
 	result.tokens = tokens;
+
+	
+	printf(" there are %i tokens\n", result.size);
+
+	for (int i = 0; i < token_count + 1; i++)
+	{
+		free(tokens[i]);
+	}
 
 	return result;
 }
@@ -100,11 +115,10 @@ int parse_file(FILE *fp)
 			if (line[0] != '\n')
 			{
 				// Get tokens and evaluate them
+				printf("At Line %i", line_number);
 				new_chunk = generate_tokens(line);
-
-				// Debug
-				printf("There are %i tokens at line no: %i\n", new_chunk.size, line_number);
-
+				
+				
 				line_number++;
 			}
 			else
