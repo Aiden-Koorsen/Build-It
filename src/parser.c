@@ -26,7 +26,6 @@ token_chunk generate_tokens(char *line)
 		}
 	}
 
-
 	token tokens[token_count + 1];
 
 	int offset = 0;
@@ -54,26 +53,35 @@ token_chunk generate_tokens(char *line)
 		offset = space_positions[i] + 1;
 	}
 
+	int size = 0;
 	// Getting the last token from end of file
-	int size = (strlen(line) - space_positions[token_count - 1]) - 1;
-	tokens[token_count] = malloc(sizeof(char) * (size + 1));
+	if (token_count > 0)
+	{
+		size = (strlen(line) - space_positions[token_count - 1]) - 1;
+	
+		tokens[token_count] = malloc(sizeof(char) * (size + 1));
 
-	strncpy(tokens[token_count], (line + strlen(line) - offset), size);
-	tokens[token_count][size] = '\0';
-
+		strncpy(tokens[token_count], (line + strlen(line) - offset), size);
+		tokens[token_count][size] = '\0';
+	}
+	else if (token_count == 0)
+	{
+		size = strlen(line);
+		tokens[0] = malloc(sizeof(char) * (size + 1));
+		
+		strncpy(tokens[0], line, size);
+		tokens[0][size] = '\0';
+	}
 	// Assign values to result and then return the new chunk
 	token_chunk result;
 	
 	result.size = token_count + 1;
 	result.tokens = tokens;
 
-	
-	printf(" there are %i tokens\n", result.size);
-
-	for (int i = 0; i < token_count + 1; i++)
-	{
-		free(tokens[i]);
-	}
+//	for (int i = 0; i < token_count + 1; i++)
+//	{
+//		free(tokens[i]);
+//	}
 
 	return result;
 }
@@ -105,31 +113,33 @@ int parse_file(FILE *fp)
 	int line_number = 1;
 	while (!feof(fp))
 	{
-		char line[70] = {'\0'};
+		char line[100] = {'\0'};
 		token_chunk new_chunk;
 
 		// Gets line from file and ends at newline character - which makes it so we only ever read lines
-		if (fgets(line, 70, fp) != NULL)
+		if (fgets(line, 100, fp) != NULL)
 		{
 			// Check if the line is not just blank space
 			if (line[0] != '\n')
 			{
 				// Get tokens and evaluate them
-				printf("At Line %i", line_number);
 				new_chunk = generate_tokens(line);
-				
-				
+							
 				line_number++;
+		
+				// Test output
+				for (int i = 0; i < new_chunk.size; i++)
+				{
+					printf("%s\n", new_chunk.tokens[i]);
+				}
+
+				// I still need to free this memory but only when I am done with it
+				//free(new_chunk.tokens);
 			}
 			else
 			{
 				line_number++;
 			}
 		}
-		else 
-		{
-			printf("Error: Failed to parse file at line %i.\n", line_number);
-			return 1;
-		}
-	}	
+	}
 }
